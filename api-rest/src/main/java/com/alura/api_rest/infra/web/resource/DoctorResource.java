@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,8 +15,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
+import java.net.URI;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -28,10 +28,12 @@ public class DoctorResource {
 
   @PostMapping
   @Transactional
-  public ResponseEntity<Void> signUp(@RequestBody @Valid DoctorsRegistrationDetailsDTO requestDto) {
+  public ResponseEntity<DoctorsRegistrationDetailsDTO> signUp(@RequestBody @Valid DoctorsRegistrationDetailsDTO requestDto,
+                                     UriComponentsBuilder uriBuilder) {
     log.debug("Request DTO: {}", new Gson().toJson(requestDto));
-    doctorService.saveDoctor(requestDto);
-    return ResponseEntity.noContent().build();
+    DoctorsRegistrationDetailsDTO doctor = doctorService.saveDoctor(requestDto);
+    URI uri = uriBuilder.path("/doctors/{id}").buildAndExpand(doctor.getId()).toUri();
+    return ResponseEntity.created(uri).body(doctor);
   }
 
   @GetMapping
@@ -39,6 +41,11 @@ public class DoctorResource {
         @PageableDefault(size = 3, sort = {"name"}, direction = Sort.Direction.ASC)
         Pageable pageable) {
     return doctorService.getDoctors(pageable);
+  }
+
+  @GetMapping("/{id}")
+  public DoctorsRegistrationDetailsDTO getDoctorById(@PathVariable String id) {
+    return doctorService.getDoctorById(Long.valueOf(id));
   }
 
   @PutMapping

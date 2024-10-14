@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DoctorsRegistrationDetailsDTO {
+  private Long id;
   @NotBlank
   private String name;
   @NotBlank
@@ -21,6 +22,8 @@ public class DoctorsRegistrationDetailsDTO {
   private String email;
   @NotBlank
   private String phone;
+  @NotNull
+  private Boolean active;
   @NotBlank
   @Pattern(regexp = "\\d{4,6}")
   private String crm;

@@ -26,16 +26,21 @@ public class DoctorService {
   @Autowired
   private DoctorRepository doctorRepository;
 
-  public void saveDoctor(DoctorsRegistrationDetailsDTO requestDto) {
-    doctorRepository.save(DoctorMapper.toModel(requestDto));
+  public DoctorsRegistrationDetailsDTO saveDoctor(DoctorsRegistrationDetailsDTO requestDto) {
+    DoctorsRegistrationDetails doctor = doctorRepository.save(DoctorMapper.toModel(requestDto));
+    return DoctorMapper.toDto(doctor);
   }
 
   public Page<DoctorsDataListDTO> getDoctors(Pageable pageable) {
     return doctorRepository.findAllByActiveTrue(pageable).map(DoctorMapper::toModelList);
   }
 
-  public DoctorsRegistrationDetails getById(Long id) {
+  private DoctorsRegistrationDetails getById(Long id) {
     return doctorRepository.findById(id);
+  }
+
+  public DoctorsRegistrationDetailsDTO getDoctorById(Long id) {
+    return DoctorMapper.toDto(doctorRepository.findById(id));
   }
 
   public void update(UpdateDoctorDTO requestDto) {

@@ -33,6 +33,7 @@ public final class DoctorMapper {
           .email(dto.getEmail())
           .specialty(dto.getSpecialty())
           .phone(dto.getPhone())
+          .active(dto.getActive())
           .address(AddressMapper.toModel(dto.getAddress()))
           .build();
   }
