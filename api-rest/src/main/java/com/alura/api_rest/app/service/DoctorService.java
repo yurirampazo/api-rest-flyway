@@ -40,7 +40,9 @@ public class DoctorService {
   }
 
   public DoctorsRegistrationDetailsDTO getDoctorById(Long id) {
-    return DoctorMapper.toDto(doctorRepository.findById(id));
+    DoctorsRegistrationDetailsDTO dto = DoctorMapper.toDto(doctorRepository.findById(id));
+    log.debug("Response from Database: {}", dto);
+    return dto;
   }
 
   public void update(UpdateDoctorDTO requestDto) {

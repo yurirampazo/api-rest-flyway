@@ -13,4 +13,5 @@ server:
   port: 8080
   servlet:
     context-path: /crm-api
-
+  error:
+    include-stacktrace: never
