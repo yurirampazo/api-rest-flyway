@@ -15,3 +15,8 @@ server:
     context-path: /crm-api
   error:
     include-stacktrace: never
+
+app:
+  security:
+    token:
+      client-secret: ${APP_CLIENT_SECRET:12345678}
