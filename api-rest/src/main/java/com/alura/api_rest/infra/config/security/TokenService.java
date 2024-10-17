@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +22,10 @@ public class TokenService {
 
 
     public String generateToken(UserApp userApp) {
+        log.info("Generating JWT...");
         final var plusMillisToExpire = 20000;
         try {
-            var algorithm = Algorithm.HMAC256(clientSecret);
+            var algorithm = Algorithm.HMAC512(clientSecret);
             return JWT.create()
                     .withIssuer(ISSUER)
                     .withSubject(userApp.getUsername())
@@ -38,7 +40,7 @@ public class TokenService {
         DecodedJWT decodedJWT;
         final var BEARER = "Bearer ";
         try {
-            var algorithm = Algorithm.HMAC256(clientSecret);
+            var algorithm = Algorithm.HMAC512(clientSecret);
             var verifier = JWT.require(algorithm)
                     .withIssuer(ISSUER)
                     .build();
@@ -48,6 +50,22 @@ public class TokenService {
             return decodedJWT.getSubject();
         } catch (JWTVerificationException exception) {
             throw new JWTVerificationException("Problem verifying JWT Token!");
+        }
+    }
+
+    public boolean isValidToken(String jwtToken) {
+        final var BEARER = "Bearer ";
+        try {
+            var algorithm = Algorithm.HMAC512(clientSecret);
+            var verifier = JWT.require(algorithm)
+                    .withIssuer(ISSUER)
+                    .build();
+            jwtToken = jwtToken.replace(BEARER, Strings.EMPTY);
+            verifier.verify(jwtToken);
+            return true;
+        } catch (JWTVerificationException exception) {
+            log.warn("Invalid JWT Token: {}", exception.getMessage());
+            return false;
         }
     }
 }

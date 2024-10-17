@@ -35,8 +35,8 @@ public class SecurityConfig {
                             req.requestMatchers(HttpMethod.POST, "/login").permitAll();
                             req.requestMatchers(HttpMethod.POST, "/sign-up").permitAll();
                             req.requestMatchers(HttpMethod.DELETE, "/medicos").hasRole(ADMIN);
-                            req.requestMatchers(HttpMethod.DELETE, "/pacientes").hasRole(ADMIN);
-                            req.anyRequest().authenticated();
+                            req.requestMatchers(HttpMethod.DELETE, "/customers").hasRole(ADMIN);
+                            req.anyRequest().permitAll();
                         }).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
@@ -48,7 +48,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-//        return NoOpPasswordEncoder.getInstance();
         return new BCryptPasswordEncoder();
     }
 
