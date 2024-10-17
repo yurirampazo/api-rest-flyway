@@ -98,7 +98,7 @@ public class DoctorService {
     doctor.setActive(false);
     doctorRepository.save(doctor);
     log.info("Succefully incativated doctor {}", id);
-    log.debug("Docotr: {}", doctor);
+    log.debug("Doctor: {}", doctor);
   }
 
 }

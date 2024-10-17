@@ -33,6 +33,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .authorizeHttpRequests(req -> {
                             req.requestMatchers(HttpMethod.POST, "/login").permitAll();
+                            req.requestMatchers(HttpMethod.POST, "/sign-up").permitAll();
                             req.requestMatchers(HttpMethod.DELETE, "/medicos").hasRole(ADMIN);
                             req.requestMatchers(HttpMethod.DELETE, "/pacientes").hasRole(ADMIN);
                             req.anyRequest().authenticated();
