@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -37,6 +38,7 @@ public class DoctorResource {
   }
 
   @GetMapping
+  @Secured(value = "ROLE_ADMIN")
   public Page<DoctorsDataListDTO> getListDoctors(
         @PageableDefault(size = 3, sort = {"name"}, direction = Sort.Direction.ASC)
         Pageable pageable) {
@@ -57,6 +59,7 @@ public class DoctorResource {
   }
 
   @DeleteMapping("/{id}")
+  @Secured(value = "ROLE_ADMIN")
   @Transactional
   public ResponseEntity<Void> delete(@PathVariable Long id) {
     log.debug("Request id to delete: {}", id);

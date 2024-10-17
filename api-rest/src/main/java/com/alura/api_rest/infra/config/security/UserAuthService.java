@@ -1,4 +1,4 @@
-package com.alura.api_rest.infra.security;
+package com.alura.api_rest.infra.config.security;
 
 import com.alura.api_rest.infra.persist.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

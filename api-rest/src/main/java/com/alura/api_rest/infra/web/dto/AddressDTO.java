@@ -16,7 +16,7 @@ public class AddressDTO {
   private String street;
   @NotBlank
   private String neighborhood;
-  @Pattern(regexp = "\\d{8}")
+  @Pattern(regexp = "\\d{8}", message = "Must have 8 digits")
   private String cep;
   @NotBlank
   private String city;

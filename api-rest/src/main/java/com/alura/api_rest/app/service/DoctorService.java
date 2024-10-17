@@ -1,9 +1,7 @@
 package com.alura.api_rest.app.service;
 
-import com.alura.api_rest.domain.model.Address;
 import com.alura.api_rest.domain.model.DoctorsRegistrationDetails;
 import com.alura.api_rest.infra.persist.repository.DoctorRepository;
-import com.alura.api_rest.infra.web.dto.AddressDTO;
 import com.alura.api_rest.infra.web.dto.DoctorsDataListDTO;
 import com.alura.api_rest.infra.web.dto.DoctorsRegistrationDetailsDTO;
 import com.alura.api_rest.infra.web.dto.UpdateDoctorDTO;
@@ -16,8 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-
-import java.util.Optional;
 
 @Log4j2
 @Service
@@ -40,22 +36,22 @@ public class DoctorService {
   }
 
   public DoctorsRegistrationDetailsDTO getDoctorById(Long id) {
-    DoctorsRegistrationDetailsDTO dto = DoctorMapper.toDto(doctorRepository.findById(id));
+    var dto = DoctorMapper.toDto(doctorRepository.findById(id));
     log.debug("Response from Database: {}", dto);
     return dto;
   }
 
   public void update(UpdateDoctorDTO requestDto) {
-    DoctorsRegistrationDetails doctor = getById(requestDto.getId());
+    var doctor = getById(requestDto.getId());
     if (StringUtils.isNotBlank(requestDto.getPhone())) {
       doctor.setPhone(requestDto.getPhone());
     }
     if (StringUtils.isNotBlank(requestDto.getName())) {
       doctor.setName(requestDto.getName());
     }
-    Address address = doctor.getAddress();
+    var address = doctor.getAddress();
     if (!ObjectUtils.isEmpty(requestDto.getAddress())) {
-      AddressDTO addressDTO = requestDto.getAddress() ;
+      var addressDTO = requestDto.getAddress() ;
       if (StringUtils.isNotBlank(addressDTO.getCep())) {
         address.setCep(addressDTO.getCep());
       }
@@ -84,7 +80,7 @@ public class DoctorService {
   }
 
   public void delete(Long id) {
-    DoctorsRegistrationDetails doctor = getById(id);
+    var doctor = getById(id);
     if (ObjectUtils.isEmpty(doctor)) {
       log.info("No object found for deletion");
       return;
@@ -94,7 +90,7 @@ public class DoctorService {
   }
 
   public void incativateById(Long id) {
-    DoctorsRegistrationDetails doctor = getById(id);
+    var doctor = getById(id);
     if (ObjectUtils.isEmpty(doctor)) {
       log.info("Doctor ID {} not found", id);
       return;
