@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,15 +41,15 @@ public class PatientResource {
 
   @GetMapping
   @Secured(value = "ROLE_ADMIN")
-  public Page<PatientDataListDTO> getListPatient(
+  public ResponseEntity<Page<PatientDataListDTO>> getListPatient(
         @PageableDefault(size = 3, sort = {"name"}, direction = Sort.Direction.ASC)
         Pageable pageable) {
-    return patientService.getPatients(pageable);
+    return  ResponseEntity.ok().body(patientService.getPatients(pageable));
   }
 
   @GetMapping("/{id}")
-  public PatientRegistrationDetailsDTO getDoctorById(@PathVariable String id) {
-    return patientService.getPatientById(Long.valueOf(id));
+  public ResponseEntity<PatientRegistrationDetailsDTO> getDoctorById(@PathVariable String id) {
+    return ResponseEntity.ok().body(patientService.getPatientById(Long.valueOf(id)));
   }
 
   @PutMapping

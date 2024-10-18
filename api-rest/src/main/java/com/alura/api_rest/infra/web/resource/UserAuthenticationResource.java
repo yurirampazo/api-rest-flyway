@@ -47,7 +47,4 @@ public class UserAuthenticationResource {
         var uri = uriComponentsBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(user);
     }
-
-
-
 }

@@ -39,15 +39,15 @@ public class DoctorResource {
 
   @GetMapping
   @Secured(value = "ROLE_ADMIN")
-  public Page<DoctorsDataListDTO> getListDoctors(
+  public ResponseEntity<Page<DoctorsDataListDTO>> getListDoctors(
         @PageableDefault(size = 3, sort = {"name"}, direction = Sort.Direction.ASC)
         Pageable pageable) {
-    return doctorService.getDoctors(pageable);
+    return ResponseEntity.ok().body(doctorService.getDoctors(pageable));
   }
 
   @GetMapping("/{id}")
-  public DoctorsRegistrationDetailsDTO getDoctorById(@PathVariable String id) {
-    return doctorService.getDoctorById(Long.valueOf(id));
+  public ResponseEntity<DoctorsRegistrationDetailsDTO> getDoctorById(@PathVariable String id) {
+    return ResponseEntity.ok().body(doctorService.getDoctorById(Long.valueOf(id)));
   }
 
   @PutMapping
