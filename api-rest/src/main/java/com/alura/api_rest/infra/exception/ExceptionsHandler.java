@@ -1,7 +1,9 @@
 package com.alura.api_rest.infra.exception;
 
 import com.alura.api_rest.infra.exception.dto.DefaultErrorDTO;
+import com.alura.api_rest.infra.exception.dto.UsernameAlreadyRegisteredException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.ServletException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -48,5 +50,11 @@ public class ExceptionsHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Object> handleAuthentication() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
+    }
+
+    @ExceptionHandler(UsernameAlreadyRegisteredException.class)
+    public ResponseEntity<Object> handleServletException(UsernameAlreadyRegisteredException
+                                                                     e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }

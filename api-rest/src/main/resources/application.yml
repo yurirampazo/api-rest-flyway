@@ -20,3 +20,10 @@ app:
   security:
     token:
       client-secret: ${APP_CLIENT_SECRET:12345678}
+
+#Uncomment for explicit paths from swagger, see more: https://springdoc.org/
+#springdoc:
+#  swagger-ui:
+#    path: /swagger-ui
+#  api-docs:
+#    path: /v3/api-docs

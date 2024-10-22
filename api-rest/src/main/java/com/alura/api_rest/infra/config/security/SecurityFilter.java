@@ -12,10 +12,13 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
+import static com.alura.api_rest.domain.constants.SecurityFilterConstants.SKIP_FILTER_PATHS;
 
 @Log4j2
 @Component
@@ -24,6 +27,8 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
     private final UserRepository userRepository;
+    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
+
 
     /**
      * Gets a subject from token, subject here is the same as a username
@@ -39,18 +44,23 @@ public class SecurityFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
-
-
-            final var LOGIN = "/crm-api/auth/login";
-            final var SIGN_UP = "/crm-api/auth/sign-up";
             log.info("Starting internal filter...");
             var requestPath = request.getRequestURI();
-            if (LOGIN.equals(requestPath) || SIGN_UP.equals(requestPath)) {
-                log.debug("Skipping token validation for login request.");
+            log.info("Attempting to access: {}", requestPath);
+            for (String skipPath : SKIP_FILTER_PATHS) {
+                if (antPathMatcher.match(skipPath, requestPath)) {
+                    log.debug("Skipping token validation for: {}", requestPath);
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+            }
+            var jwtToken = getJwtToken(request);
+            if (jwtToken == null) {
+                log.warn("JWT Token is missing. Skipping authentication.");
                 filterChain.doFilter(request, response);
                 return;
             }
-            var jwtToken = getJwtToken(request);
+
             log.info("Request JWT Token: {}", jwtToken);
             var subjectFromToken = tokenService.getSubjectFromToken(jwtToken);
             var user = userRepository.findByUsername(subjectFromToken);
@@ -75,7 +85,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     private String getJwtToken(HttpServletRequest request) {
         var authorizationHeader = request.getHeader("Authorization");
         if (StringUtils.isBlank(authorizationHeader)) {
-            throw new IllegalArgumentException("JWT missing on request headers");
+           return null;
         }
         return authorizationHeader;
     }

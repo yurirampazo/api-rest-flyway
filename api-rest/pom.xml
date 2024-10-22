@@ -86,7 +86,13 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
-			<version>2.17.1</version> <!-- Substitua pela versão mais recente -->
+			<version>2.17.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.6.0</version>
 		</dependency>
 
 	</dependencies>
@@ -114,20 +120,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>org.flywaydb</groupId>
-				<artifactId>flyway-maven-plugin</artifactId>
-				<version>9.5.1</version>
-				<configuration>
-					<dataSource>
-						<url>jdbc:mysql://localhost:3306/seu_banco_de_dados</url>
-						<user>yurir</user>
-						<password>123456</password>
-					</dataSource>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
 

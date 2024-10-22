@@ -15,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.AntPathMatcher;
+
+import static com.alura.api_rest.domain.constants.SecurityFilterConstants.SKIP_FILTER_PATHS;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +26,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final SecurityFilter securityFilter;
+    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -31,13 +36,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                        .authorizeHttpRequests(req -> {
-                            req.requestMatchers(HttpMethod.POST, "/login").permitAll();
-                            req.requestMatchers(HttpMethod.POST, "/sign-up").permitAll();
-                            req.requestMatchers(HttpMethod.DELETE, "/medicos").hasRole(ADMIN);
-                            req.requestMatchers(HttpMethod.DELETE, "/customers").hasRole(ADMIN);
-                            req.anyRequest().permitAll();
-                        }).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(req -> {
+                    req.requestMatchers(SKIP_FILTER_PATHS).permitAll();
+                    req.requestMatchers(HttpMethod.DELETE, "/medicos").hasRole(ADMIN);
+                    req.requestMatchers(HttpMethod.DELETE, "/customers").hasRole(ADMIN);
+                    req.anyRequest().permitAll();
+                }).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -47,7 +51,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
