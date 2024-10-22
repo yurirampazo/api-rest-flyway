@@ -6,6 +6,7 @@ import com.alura.api_rest.domain.model.Appointment;
 import com.alura.api_rest.domain.model.DoctorsRegistrationDetails;
 import com.alura.api_rest.infra.persist.repository.AppointmentRepository;
 import com.alura.api_rest.infra.web.dto.AppointmentDataRequestDTO;
+import com.alura.api_rest.infra.web.dto.AppointmentResponseDTO;
 import com.alura.api_rest.infra.web.mapper.DoctorMapper;
 import com.alura.api_rest.infra.web.mapper.PatientMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,7 +29,7 @@ public class AppointmentService {
     private final List<AppointmentValidator> appointmentValidators;
 
 
-    public void saveAppointment(AppointmentDataRequestDTO requestDto) {
+    public AppointmentResponseDTO saveAppointment(AppointmentDataRequestDTO requestDto) {
         log.info("Saving appoinyment...");
         Long docId = Optional.ofNullable(requestDto.getDoctorId()).orElse(-1L);
         Long patId = Optional.ofNullable(requestDto.getPatientId()).orElse(-1L);
@@ -50,7 +51,12 @@ public class AppointmentService {
 
         log.info("Starting validation filters for appointment!");
         appointmentValidators.forEach(validator -> validator.validate(requestDto));
-        appointmentRepository.save(appointment);
+        Appointment save = appointmentRepository.save(appointment);
+        return AppointmentResponseDTO.builder()
+                .id(save.getId())
+                .doctorId(save.getDoctor().getId())
+                .dateTime(save.getDateTime().toString())
+                .build();
     }
 
     private DoctorsRegistrationDetails defineDoctor(AppointmentDataRequestDTO requestDto) {

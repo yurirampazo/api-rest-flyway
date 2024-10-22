@@ -5,6 +5,7 @@ import com.alura.api_rest.infra.web.dto.DoctorsDataListDTO;
 import com.alura.api_rest.infra.web.dto.DoctorsRegistrationDetailsDTO;
 import com.alura.api_rest.infra.web.dto.UpdateDoctorDTO;
 import com.google.gson.Gson;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,6 +24,7 @@ import java.net.URI;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/doctors")
+@SecurityRequirement(name = "bearer-key")
 public class DoctorResource {
 
   private final DoctorService doctorService;
@@ -38,7 +40,6 @@ public class DoctorResource {
   }
 
   @GetMapping
-  @Secured(value = "ROLE_ADMIN")
   public ResponseEntity<Page<DoctorsDataListDTO>> getListDoctors(
         @PageableDefault(size = 3, sort = {"name"}, direction = Sort.Direction.ASC)
         Pageable pageable) {

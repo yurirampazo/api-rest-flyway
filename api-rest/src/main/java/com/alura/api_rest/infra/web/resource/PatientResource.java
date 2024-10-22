@@ -5,6 +5,7 @@ import com.alura.api_rest.infra.web.dto.PatientDataListDTO;
 import com.alura.api_rest.infra.web.dto.PatientRegistrationDetailsDTO;
 import com.alura.api_rest.infra.web.dto.UpdateDoctorDTO;
 import com.google.gson.Gson;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,6 +26,7 @@ import java.net.URI;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/patients")
+@SecurityRequirement(name = "bearer-key")
 public class PatientResource {
 
   private final PatientService patientService;

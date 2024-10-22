@@ -38,8 +38,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(SKIP_FILTER_PATHS).permitAll();
-                    req.requestMatchers(HttpMethod.DELETE, "/medicos").hasRole(ADMIN);
-                    req.requestMatchers(HttpMethod.DELETE, "/customers").hasRole(ADMIN);
+                    req.requestMatchers(HttpMethod.GET, "/patients").hasRole(ADMIN);
                     req.anyRequest().permitAll();
                 }).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
