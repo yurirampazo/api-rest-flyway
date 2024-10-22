@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${USERNAME_DB}
+    password: ${PASSWORD_DB}
+  application:
+    name: api-rest
+  jpa:
+    show-sql: false
+    properties.hibernate.format_sql: false
