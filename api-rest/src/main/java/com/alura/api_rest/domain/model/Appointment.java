@@ -26,5 +26,5 @@ public class Appointment {
     @JoinColumn(name = "patient_id")
     private PatientRegistrationDetails patient;
 
-    private LocalDateTime date;
+    private LocalDateTime dateTime;
 }

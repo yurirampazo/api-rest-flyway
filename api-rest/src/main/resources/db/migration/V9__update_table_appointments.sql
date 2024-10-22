@@ -1,0 +1,1 @@
+ALTER TABLE appointments ADD date_time DATE NOT NULL;

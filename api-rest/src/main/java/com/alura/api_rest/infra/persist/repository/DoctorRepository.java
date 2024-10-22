@@ -15,16 +15,23 @@ public interface DoctorRepository extends JpaRepository<DoctorsRegistrationDetai
 
     Page<DoctorsRegistrationDetails> findAllByActiveTrue(Pageable pageable);
 
-  @Query("""
-          SELECT d FROM Doctor d
-          WHERE d.active = true
-          AND d.specialty = :specialty
-          AND d.id not in(
-            SELECT a.doctor.id FROM Appointment a WHERE
-            a.date = :date
-          )
-          ORDER BY rand()
-          limit 1
-          """)
+    @Query("""
+            SELECT d FROM Doctor d
+            WHERE d.active = true
+            AND d.specialty = :specialty
+            AND d.id not in(
+              SELECT a.doctor.id FROM Appointment a WHERE
+              a.dateTime = :date
+            )
+            ORDER BY rand()
+            limit 1
+            """)
     DoctorsRegistrationDetails findDocBySpecialty(@Param("specialty") Specialty specialty, @Param("date") LocalDateTime date);
+
+
+    @Query("""
+            select d.active from Doctor d where d.id = :doctorId
+            """)
+    Boolean findByActive(@Param("doctorId") Long doctorId);
+
 }

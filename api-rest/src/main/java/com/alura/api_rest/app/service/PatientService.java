@@ -7,6 +7,7 @@ import com.alura.api_rest.infra.web.dto.PatientRegistrationDetailsDTO;
 import com.alura.api_rest.infra.web.dto.UpdateDoctorDTO;
 import com.alura.api_rest.infra.web.mapper.PatientMapper;
 import io.micrometer.common.util.StringUtils;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -99,4 +100,7 @@ public class PatientService {
         log.debug("Patient: {}", doctor);
     }
 
+    public boolean isActivePatient(Long patientId) {
+        return patientRepository.findByIdAndActiveTrue(patientId);
+    }
 }

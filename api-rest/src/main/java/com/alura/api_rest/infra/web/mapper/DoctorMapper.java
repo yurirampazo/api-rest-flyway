@@ -24,6 +24,7 @@ public final class DoctorMapper {
 
   public static DoctorsRegistrationDetails toModel(DoctorsRegistrationDetailsDTO dto) {
     return DoctorsRegistrationDetails.builder()
+          .id(dto.getId())
           .crm(dto.getCrm())
           .name(dto.getName())
           .email(dto.getEmail())

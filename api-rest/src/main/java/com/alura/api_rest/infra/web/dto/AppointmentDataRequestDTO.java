@@ -2,11 +2,13 @@ package com.alura.api_rest.infra.web.dto;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -16,17 +18,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AppointmentDataRequestDTO {
 
-    @NotBlank
+    @NotNull
     private Long doctorId;
 
-    @NotBlank
+    @NotNull
     private Long patientId;
 
-    @NotBlank
     private String specialty;
 
     @Future
-    @Pattern(regexp = "yyyy-MM-dd HH:mm", message = "Must be in yyyy-MM-dd HH:mm pattern")
     private LocalDateTime date;
 
 }

@@ -23,6 +23,7 @@ public final class PatientMapper {
 
   public static PatientRegistrationDetails toModel(PatientRegistrationDetailsDTO dto) {
     return PatientRegistrationDetails.builder()
+          .id(dto.getId())
           .cpf(dto.getCpf())
           .name(dto.getName())
           .email(dto.getEmail())
