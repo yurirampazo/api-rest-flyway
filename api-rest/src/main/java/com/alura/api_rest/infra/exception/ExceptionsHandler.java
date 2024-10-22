@@ -16,13 +16,23 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Optional;
 
 @RestControllerAdvice
 public class ExceptionsHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Void> handleNotFoundError(){
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<DefaultErrorDTO> handleNotFoundError(){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(buildErrror("Registry not found"));
+    }
+
+    private DefaultErrorDTO buildErrror(String msg) {
+        String errMsg = Optional.ofNullable(msg).orElse("Unkown Error");
+
+        return DefaultErrorDTO.builder()
+                .message(errMsg)
+                .build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -33,28 +43,32 @@ public class ExceptionsHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Object> handle400(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+    public ResponseEntity<DefaultErrorDTO> handle400(HttpMessageNotReadableException ex) {
+        return ResponseEntity.badRequest().body(buildErrror(ex.getMessage()));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Object> handleBadCredentials() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
+    public ResponseEntity<DefaultErrorDTO> handleBadCredentials() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(buildErrror("Invalid Credentials"));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Object> handleAccessDenied() {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Denied Access");
+    public ResponseEntity<DefaultErrorDTO> handleAccessDenied() {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(buildErrror("Denied Access"));
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Object> handleAuthentication() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
+    public ResponseEntity<DefaultErrorDTO> handleAuthentication() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(buildErrror("Authentication failed"));
     }
 
     @ExceptionHandler(UsernameAlreadyRegisteredException.class)
-    public ResponseEntity<Object> handleServletException(UsernameAlreadyRegisteredException
+    public ResponseEntity<DefaultErrorDTO> handleServletException(UsernameAlreadyRegisteredException
                                                                      e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(buildErrror("Authentication failed"));
     }
 }
