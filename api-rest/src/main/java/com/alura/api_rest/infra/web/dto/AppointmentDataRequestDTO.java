@@ -22,6 +22,9 @@ public class AppointmentDataRequestDTO {
     @NotBlank
     private Long patientId;
 
+    @NotBlank
+    private String specialty;
+
     @Future
     @Pattern(regexp = "yyyy-MM-dd HH:mm", message = "Must be in yyyy-MM-dd HH:mm pattern")
     private LocalDateTime date;

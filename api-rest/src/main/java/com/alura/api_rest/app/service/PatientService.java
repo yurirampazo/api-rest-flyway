@@ -9,7 +9,6 @@ import com.alura.api_rest.infra.web.mapper.PatientMapper;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,7 @@ import org.springframework.util.ObjectUtils;
 @Service
 @RequiredArgsConstructor
 public class PatientService {
-    @Autowired
-    private PatientRepository patientRepository;
+    private final PatientRepository patientRepository;
 
     public PatientRegistrationDetailsDTO savePatient(PatientRegistrationDetailsDTO requestDto) {
         PatientRegistrationDetails doctor = patientRepository.save(PatientMapper.toModel(requestDto));

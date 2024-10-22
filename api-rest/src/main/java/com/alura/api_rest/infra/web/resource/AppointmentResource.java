@@ -27,6 +27,7 @@ public class AppointmentResource {
   public ResponseEntity<Void> makeAppointment(@RequestBody @Valid AppointmentDataRequestDTO requestDto,
                                      UriComponentsBuilder uriBuilder) {
     log.debug("Request DTO: {}", new Gson().toJson(requestDto));
+    appointmentService.saveAppointment(requestDto);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 }
