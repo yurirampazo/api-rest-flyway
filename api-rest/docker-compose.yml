@@ -1,0 +1,24 @@
+services:
+  spring-app:
+    image: api-rest:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vollmed_api
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: vollmed_api
+      MYSQL_USER: yurir
+      MYSQL_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data: {}
