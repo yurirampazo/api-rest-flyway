@@ -1,11 +1,15 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost/vollmed_api
-    username: yurir
+    url: jdbc:mysql://mysql:3306/vollmed_api
+    username: root
     password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
   application:
     name: api-rest
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
     show-sql: true
     properties.hibernate.format_sql: true
 

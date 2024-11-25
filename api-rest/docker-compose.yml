@@ -14,7 +14,7 @@ services:
       - "3307:3306"
     environment:
       MYSQL_DATABASE: vollmed_api
-      MYSQL_USER: yurir
+      MYSQL_USER: root
       MYSQL_PASSWORD: 123456
       MYSQL_ROOT_PASSWORD: 123456
     volumes:
