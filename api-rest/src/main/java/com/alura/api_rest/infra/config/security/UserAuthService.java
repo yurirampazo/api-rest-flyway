@@ -22,32 +22,32 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserAuthService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+  private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username);
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return userRepository.findByUsername(username);
+  }
+
+  public DataRegisteredDTO saveUser(DataAuthLogin request) {
+    var user = userRepository.findByUsername(request.getUsername());
+    if (user != null) {
+      throw new UsernameAlreadyRegisteredException("Username already in use!");
     }
 
-    public DataRegisteredDTO saveUser(DataAuthLogin request) {
-        var user = userRepository.findByUsername(request.getUsername());
-        if (user != null) {
-            throw new UsernameAlreadyRegisteredException("Username already in use!");
-        }
+    var userApp = UserApp.builder()
+          .username(request.getUsername())
+          .password(passwordEncoder.encode(request.getPassword()))
+          .build();
+    var save = userRepository.save(userApp);
+    return DataRegisteredDTO.builder()
+          .id(save.getId())
+          .username(AppUtils.maskEmail(userApp.getUsername()))
+          .password("************")
+          .build();
 
-        var userApp = UserApp.builder()
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .build();
-        var save = userRepository.save(userApp);
-        return DataRegisteredDTO.builder()
-                .id(save.getId())
-                .username(AppUtils.maskEmail(userApp.getUsername()))
-                .password("************")
-                .build();
-
-    }
+  }
 
 
 }

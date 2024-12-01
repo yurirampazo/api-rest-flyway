@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DataAuthLogin {
-    @Email
-    private String username;
-    private String password;
+  @Email
+  private String username;
+  private String password;
 }

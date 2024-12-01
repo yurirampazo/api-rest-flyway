@@ -5,6 +5,10 @@ services:
       - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vollmed_api
+      APP_CLIENT_SECRET: 12345678
+      VIA_VEP_HOST: https://viacep.com.br
+      VIA_CEP_CONTEXT_PATH: /ws
+      GET_ZIPCODE: /{zipCode}/json
     depends_on:
       - mysql
 

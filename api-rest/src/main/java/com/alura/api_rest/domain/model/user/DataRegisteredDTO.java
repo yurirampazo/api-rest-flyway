@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DataRegisteredDTO {
-    private Long id;
-    private String username;
-    private String password;
+  private Long id;
+  private String username;
+  private String password;
 }

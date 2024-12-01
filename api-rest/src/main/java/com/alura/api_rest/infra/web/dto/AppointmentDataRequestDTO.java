@@ -1,5 +1,6 @@
 package com.alura.api_rest.infra.web.dto;
 
+import com.alura.api_rest.infra.annotations.NormalizeStrings;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,17 +17,18 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@NormalizeStrings
 public class AppointmentDataRequestDTO {
 
-    @NotNull
-    private Long doctorId;
+  @NotNull
+  private Long doctorId;
 
-    @NotNull
-    private Long patientId;
+  @NotNull
+  private Long patientId;
 
-    private String specialty;
+  private String specialty;
 
-    @Future
-    private LocalDateTime date;
+  @Future
+  private LocalDateTime date;
 
 }

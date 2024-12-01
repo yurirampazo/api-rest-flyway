@@ -12,5 +12,5 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JwtDataTokenDTO {
-    private String accessToken;
+  private String accessToken;
 }

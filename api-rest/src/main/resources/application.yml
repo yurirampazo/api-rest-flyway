@@ -25,6 +25,22 @@ app:
     token:
       client-secret: ${APP_CLIENT_SECRET:12345678}
 
+integrations:
+  host:
+    via-cep: ${VIA_VEP_HOST:https://viacep.com.br}
+  context-path:
+    via-cep: ${VIA_CEP_CONTEXT_PATH:/ws}
+  enpoint:
+    get-zip-code: ${GET_ZIPCODE:/{zipCode}/json}
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
 #Uncomment for explicit paths from swagger, see more: https://springdoc.org/
 #springdoc:
 #  swagger-ui:

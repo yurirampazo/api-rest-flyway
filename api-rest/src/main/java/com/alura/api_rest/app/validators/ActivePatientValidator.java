@@ -1,6 +1,6 @@
 package com.alura.api_rest.app.validators;
 
-import com.alura.api_rest.app.service.PatientService;
+import com.alura.api_rest.app.service.impl.PatientServiceImpl;
 import com.alura.api_rest.infra.web.dto.AppointmentDataRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,12 +11,12 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class ActivePatientValidator implements AppointmentValidator {
 
-    private final PatientService patientService;
+  private final PatientServiceImpl patientServiceImpl;
 
-    public void validate(AppointmentDataRequestDTO data) {
-        var isActivePatient = patientService.isActivePatient(data.getPatientId());
-        if (!isActivePatient) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id must be active to get an appointment");
-        }
+  public void validate(AppointmentDataRequestDTO data) {
+    var isActivePatient = patientServiceImpl.isActivePatient(data.getPatientId());
+    if (!isActivePatient) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id must be active to get an appointment");
     }
+  }
 }

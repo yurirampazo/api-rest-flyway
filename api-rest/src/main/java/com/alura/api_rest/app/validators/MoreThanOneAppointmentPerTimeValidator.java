@@ -1,6 +1,6 @@
 package com.alura.api_rest.app.validators;
 
-import com.alura.api_rest.app.service.DoctorService;
+import com.alura.api_rest.app.service.impl.DoctorServiceImpl;
 import com.alura.api_rest.infra.web.dto.AppointmentDataRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,12 +11,12 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class MoreThanOneAppointmentPerTimeValidator implements AppointmentValidator {
 
-    private final DoctorService doctorService;
+  private final DoctorServiceImpl doctorServiceImpl;
 
-    public void validate(AppointmentDataRequestDTO data) {
-        var existsByMedicoId = doctorService.findByActive(data.getDoctorId());
-        if (!existsByMedicoId) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error, Doctor already has an appointment at this time");
-        }
+  public void validate(AppointmentDataRequestDTO data) {
+    var existsByMedicoId = doctorServiceImpl.findByActive(data.getDoctorId());
+    if (!existsByMedicoId) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error, Doctor already has an appointment at this time");
     }
+  }
 }

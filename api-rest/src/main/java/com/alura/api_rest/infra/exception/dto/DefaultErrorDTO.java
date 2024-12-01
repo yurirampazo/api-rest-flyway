@@ -13,12 +13,12 @@ import org.springframework.validation.FieldError;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DefaultErrorDTO {
-    private String field;
-    private String message;
+  private String field;
+  private String message;
 
-    public DefaultErrorDTO(FieldError error){
-        this.field = error.getField();
-        this.message = error.getDefaultMessage();
-    }
+  public DefaultErrorDTO(FieldError error) {
+    this.field = error.getField();
+    this.message = error.getDefaultMessage();
+  }
 
 }

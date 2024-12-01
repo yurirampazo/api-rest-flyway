@@ -24,27 +24,27 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping(value = "/auth")
 public class UserAuthenticationResource {
 
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
-    private final UserAuthService userAuthService;
+  private final AuthenticationManager authenticationManager;
+  private final TokenService tokenService;
+  private final UserAuthService userAuthService;
 
-    @PostMapping(value = "/login")
-    public ResponseEntity<JwtDataTokenDTO> doLogin(@RequestBody DataAuthLogin dataAuthLogin) {
-        log.info("Starting Login...");
-        var authenticationToken = new UsernamePasswordAuthenticationToken(dataAuthLogin.getUsername(), dataAuthLogin.getPassword());
-        var authentication = authenticationManager.authenticate(authenticationToken);
-        var tokenJWT = tokenService.generateToken((UserApp) authentication.getPrincipal());
-        log.debug("Generated JWT: {}", tokenJWT);
-        return ResponseEntity.ok(new JwtDataTokenDTO(tokenJWT));
-    }
+  @PostMapping(value = "/login")
+  public ResponseEntity<JwtDataTokenDTO> doLogin(@RequestBody DataAuthLogin dataAuthLogin) {
+    log.info("Starting Login...");
+    var authenticationToken = new UsernamePasswordAuthenticationToken(dataAuthLogin.getUsername(), dataAuthLogin.getPassword());
+    var authentication = authenticationManager.authenticate(authenticationToken);
+    var tokenJWT = tokenService.generateToken((UserApp) authentication.getPrincipal());
+    log.debug("Generated JWT: {}", tokenJWT);
+    return ResponseEntity.ok(new JwtDataTokenDTO(tokenJWT));
+  }
 
-    @PostMapping(value = "/sign-up")
-    public ResponseEntity<DataRegisteredDTO> register(@RequestBody DataAuthLogin dataAuthLogin,
-                                                      UriComponentsBuilder uriComponentsBuilder) {
-        log.info("Starting Register...");
-        var user = userAuthService.saveUser(dataAuthLogin);
-        log.info("Saved user: {}", user.getUsername());
-        var uri = uriComponentsBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(uri).body(user);
-    }
+  @PostMapping(value = "/sign-up")
+  public ResponseEntity<DataRegisteredDTO> register(@RequestBody DataAuthLogin dataAuthLogin,
+                                                    UriComponentsBuilder uriComponentsBuilder) {
+    log.info("Starting Register...");
+    var user = userAuthService.saveUser(dataAuthLogin);
+    log.info("Saved user: {}", user.getUsername());
+    var uri = uriComponentsBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
+    return ResponseEntity.created(uri).body(user);
+  }
 }

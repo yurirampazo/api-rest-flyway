@@ -1,6 +1,6 @@
 package com.alura.api_rest.infra.web.resource;
 
-import com.alura.api_rest.app.service.DoctorService;
+import com.alura.api_rest.app.service.impl.DoctorServiceImpl;
 import com.alura.api_rest.infra.web.dto.DoctorsDataListDTO;
 import com.alura.api_rest.infra.web.dto.DoctorsRegistrationDetailsDTO;
 import com.alura.api_rest.infra.web.dto.UpdateDoctorDTO;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -27,14 +28,14 @@ import java.net.URI;
 @SecurityRequirement(name = "bearer-key")
 public class DoctorResource {
 
-  private final DoctorService doctorService;
+  private final DoctorServiceImpl doctorServiceImpl;
 
   @PostMapping
   @Transactional
   public ResponseEntity<DoctorsRegistrationDetailsDTO> signUp(@RequestBody @Valid DoctorsRegistrationDetailsDTO requestDto,
-                                     UriComponentsBuilder uriBuilder) {
+                                                              UriComponentsBuilder uriBuilder) {
     log.debug("Request DTO: {}", new Gson().toJson(requestDto));
-    DoctorsRegistrationDetailsDTO doctor = doctorService.saveDoctor(requestDto);
+    DoctorsRegistrationDetailsDTO doctor = doctorServiceImpl.saveDoctor(requestDto);
     URI uri = uriBuilder.path("/doctors/{id}").buildAndExpand(doctor.getId()).toUri();
     return ResponseEntity.created(uri).body(doctor);
   }
@@ -43,19 +44,19 @@ public class DoctorResource {
   public ResponseEntity<Page<DoctorsDataListDTO>> getListDoctors(
         @PageableDefault(size = 3, sort = {"name"}, direction = Sort.Direction.ASC)
         Pageable pageable) {
-    return ResponseEntity.ok().body(doctorService.getDoctors(pageable));
+    return ResponseEntity.ok().body(doctorServiceImpl.getDoctors(pageable));
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<DoctorsRegistrationDetailsDTO> getDoctorById(@PathVariable String id) {
-    return ResponseEntity.ok().body(doctorService.getDoctorById(Long.valueOf(id)));
+    return ResponseEntity.ok().body(doctorServiceImpl.getDoctorById(Long.valueOf(id)));
   }
 
   @PutMapping
   @Transactional
   public ResponseEntity<Void> update(@RequestBody @Valid UpdateDoctorDTO requestDto) {
     log.debug("Request DTO: {}", new Gson().toJson(requestDto));
-    doctorService.update(requestDto);
+    doctorServiceImpl.update(requestDto);
     return ResponseEntity.noContent().build();
   }
 
@@ -64,7 +65,7 @@ public class DoctorResource {
   @Transactional
   public ResponseEntity<Void> delete(@PathVariable Long id) {
     log.debug("Request id to delete: {}", id);
-    doctorService.delete(id);
+    doctorServiceImpl.delete(id);
     return ResponseEntity.noContent().build();
   }
 
@@ -72,7 +73,7 @@ public class DoctorResource {
   @Transactional
   public ResponseEntity<Void> inactivate(@PathVariable Long id) {
     log.debug("Request id to be inactive: {}", id);
-    doctorService.incativateById(id);
+    doctorServiceImpl.inactivateById(id);
     return ResponseEntity.noContent().build();
   }
 

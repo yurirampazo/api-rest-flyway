@@ -1,5 +1,6 @@
 package com.alura.api_rest.infra.web.dto;
 
+import com.alura.api_rest.infra.annotations.NormalizeStrings;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@NormalizeStrings
 public class UpdatePatientDTO {
   @NotNull
   private Long id;

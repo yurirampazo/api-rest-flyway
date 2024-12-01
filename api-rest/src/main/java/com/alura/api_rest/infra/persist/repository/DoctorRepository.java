@@ -11,27 +11,27 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 
 public interface DoctorRepository extends JpaRepository<DoctorsRegistrationDetails, String> {
-    DoctorsRegistrationDetails findById(Long id);
+  DoctorsRegistrationDetails findById(Long id);
 
-    Page<DoctorsRegistrationDetails> findAllByActiveTrue(Pageable pageable);
+  Page<DoctorsRegistrationDetails> findAllByActiveTrue(Pageable pageable);
 
-    @Query("""
-            SELECT d FROM Doctor d
-            WHERE d.active = true
-            AND d.specialty = :specialty
-            AND d.id not in(
-              SELECT a.doctor.id FROM Appointment a WHERE
-              a.dateTime = :date
-            )
-            ORDER BY rand()
-            limit 1
-            """)
-    DoctorsRegistrationDetails findDocBySpecialty(@Param("specialty") Specialty specialty, @Param("date") LocalDateTime date);
+  @Query("""
+        SELECT d FROM Doctor d
+        WHERE d.active = true
+        AND d.specialty = :specialty
+        AND d.id not in(
+          SELECT a.doctor.id FROM Appointment a WHERE
+          a.dateTime = :date
+        )
+        ORDER BY rand()
+        limit 1
+        """)
+  DoctorsRegistrationDetails findDocBySpecialty(@Param("specialty") Specialty specialty, @Param("date") LocalDateTime date);
 
 
-    @Query("""
-            select d.active from Doctor d where d.id = :doctorId
-            """)
-    Boolean findByActive(@Param("doctorId") Long doctorId);
+  @Query("""
+        select d.active from Doctor d where d.id = :doctorId
+        """)
+  Boolean findByActive(@Param("doctorId") Long doctorId);
 
 }

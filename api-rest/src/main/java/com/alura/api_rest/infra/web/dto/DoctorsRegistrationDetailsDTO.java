@@ -1,6 +1,7 @@
 package com.alura.api_rest.infra.web.dto;
 
 import com.alura.api_rest.domain.enums.Specialty;
+import com.alura.api_rest.infra.annotations.NormalizeStrings;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@NormalizeStrings
 public class DoctorsRegistrationDetailsDTO {
   private Long id;
   @NotBlank

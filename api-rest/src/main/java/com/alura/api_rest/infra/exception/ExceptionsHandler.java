@@ -21,54 +21,54 @@ import java.util.Optional;
 @RestControllerAdvice
 public class ExceptionsHandler {
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<DefaultErrorDTO> handleNotFoundError(){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(buildErrror("Registry not found"));
-    }
+  @ExceptionHandler(EntityNotFoundException.class)
+  public ResponseEntity<DefaultErrorDTO> handleNotFoundError() {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body(buildErrror("Registry not found"));
+  }
 
-    private DefaultErrorDTO buildErrror(String msg) {
-        String errMsg = Optional.ofNullable(msg).orElse("Unkown Error");
+  private DefaultErrorDTO buildErrror(String msg) {
+    String errMsg = Optional.ofNullable(msg).orElse("Unkown Error");
 
-        return DefaultErrorDTO.builder()
-                .message(errMsg)
-                .build();
-    }
+    return DefaultErrorDTO.builder()
+          .message(errMsg)
+          .build();
+  }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<DefaultErrorDTO>> handleBadRequest(MethodArgumentNotValidException ex){
-        var errors = ex.getFieldErrors();
-        return ResponseEntity.badRequest()
-                .body(errors.stream().map(DefaultErrorDTO::new).toList());
-    }
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<List<DefaultErrorDTO>> handleBadRequest(MethodArgumentNotValidException ex) {
+    var errors = ex.getFieldErrors();
+    return ResponseEntity.badRequest()
+          .body(errors.stream().map(DefaultErrorDTO::new).toList());
+  }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<DefaultErrorDTO> handle400(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(buildErrror(ex.getMessage()));
-    }
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<DefaultErrorDTO> handle400(HttpMessageNotReadableException ex) {
+    return ResponseEntity.badRequest().body(buildErrror(ex.getMessage()));
+  }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<DefaultErrorDTO> handleBadCredentials() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(buildErrror("Invalid Credentials"));
-    }
+  @ExceptionHandler(BadCredentialsException.class)
+  public ResponseEntity<DefaultErrorDTO> handleBadCredentials() {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body(buildErrror("Invalid Credentials"));
+  }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<DefaultErrorDTO> handleAccessDenied() {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(buildErrror("Denied Access"));
-    }
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<DefaultErrorDTO> handleAccessDenied() {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+          .body(buildErrror("Denied Access"));
+  }
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<DefaultErrorDTO> handleAuthentication() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(buildErrror("Authentication failed"));
-    }
+  @ExceptionHandler(AuthenticationException.class)
+  public ResponseEntity<DefaultErrorDTO> handleAuthentication() {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body(buildErrror("Authentication failed"));
+  }
 
-    @ExceptionHandler(UsernameAlreadyRegisteredException.class)
-    public ResponseEntity<DefaultErrorDTO> handleServletException(UsernameAlreadyRegisteredException
-                                                                     e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(buildErrror("Authentication failed"));
-    }
+  @ExceptionHandler(UsernameAlreadyRegisteredException.class)
+  public ResponseEntity<DefaultErrorDTO> handleServletException(UsernameAlreadyRegisteredException
+                                                                      e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(buildErrror("Authentication failed"));
+  }
 }

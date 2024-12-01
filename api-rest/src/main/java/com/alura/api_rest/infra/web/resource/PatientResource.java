@@ -1,6 +1,6 @@
 package com.alura.api_rest.infra.web.resource;
 
-import com.alura.api_rest.app.service.PatientService;
+import com.alura.api_rest.app.service.impl.PatientServiceImpl;
 import com.alura.api_rest.infra.web.dto.PatientDataListDTO;
 import com.alura.api_rest.infra.web.dto.PatientRegistrationDetailsDTO;
 import com.alura.api_rest.infra.web.dto.UpdateDoctorDTO;
@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,14 +28,14 @@ import java.net.URI;
 @SecurityRequirement(name = "bearer-key")
 public class PatientResource {
 
-  private final PatientService patientService;
+  private final PatientServiceImpl patientServiceImpl;
 
   @PostMapping
   @Transactional
   public ResponseEntity<PatientRegistrationDetailsDTO> signUp(@RequestBody @Valid PatientRegistrationDetailsDTO requestDto,
                                      UriComponentsBuilder uriBuilder) {
     log.debug("Request DTO: {}", new Gson().toJson(requestDto));
-    PatientRegistrationDetailsDTO doctor = patientService.savePatient(requestDto);
+    PatientRegistrationDetailsDTO doctor = patientServiceImpl.savePatient(requestDto);
     URI uri = uriBuilder.path("/patient/{id}").buildAndExpand(doctor.getId()).toUri();
     return ResponseEntity.created(uri).body(doctor);
   }
@@ -46,19 +45,19 @@ public class PatientResource {
   public ResponseEntity<Page<PatientDataListDTO>> getListPatient(
         @PageableDefault(size = 3, sort = {"name"}, direction = Sort.Direction.ASC)
         Pageable pageable) {
-    return  ResponseEntity.ok().body(patientService.getPatients(pageable));
+    return  ResponseEntity.ok().body(patientServiceImpl.getPatients(pageable));
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<PatientRegistrationDetailsDTO> getDoctorById(@PathVariable String id) {
-    return ResponseEntity.ok().body(patientService.getPatientById(Long.valueOf(id)));
+    return ResponseEntity.ok().body(patientServiceImpl.getPatientById(Long.valueOf(id)));
   }
 
   @PutMapping
   @Transactional
   public ResponseEntity<Void> update(@RequestBody @Valid UpdateDoctorDTO requestDto) {
     log.debug("Request DTO: {}", new Gson().toJson(requestDto));
-    patientService.update(requestDto);
+    patientServiceImpl.update(requestDto);
     return ResponseEntity.noContent().build();
   }
 
@@ -67,7 +66,7 @@ public class PatientResource {
   @Transactional
   public ResponseEntity<Void> delete(@PathVariable Long id) {
     log.debug("Request id to delete: {}", id);
-    patientService.delete(id);
+    patientServiceImpl.delete(id);
     return ResponseEntity.noContent().build();
   }
 
@@ -75,7 +74,7 @@ public class PatientResource {
   @Transactional
   public ResponseEntity<Void> inactivate(@PathVariable Long id) {
     log.debug("Request id to be inactive: {}", id);
-    patientService.incativateById(id);
+    patientServiceImpl.incativateById(id);
     return ResponseEntity.noContent().build();
   }
 

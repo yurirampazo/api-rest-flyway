@@ -1,6 +1,7 @@
 package com.alura.api_rest.domain.model;
 
 import com.alura.api_rest.domain.enums.Specialty;
+import com.alura.api_rest.infra.annotations.NormalizeStrings;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 @EqualsAndHashCode(of = "id")
 @Table(name = "doctors")
 @Entity(name = "Doctor")
+@NormalizeStrings
 public class DoctorsRegistrationDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

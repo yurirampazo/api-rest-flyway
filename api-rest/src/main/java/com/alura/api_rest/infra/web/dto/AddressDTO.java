@@ -1,5 +1,6 @@
 package com.alura.api_rest.infra.web.dto;
 
+import com.alura.api_rest.infra.annotations.NormalizeStrings;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@NormalizeStrings
 public class AddressDTO {
   @NotBlank
   private String street;

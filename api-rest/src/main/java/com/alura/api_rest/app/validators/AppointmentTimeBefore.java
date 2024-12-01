@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
 @Component
 public class AppointmentTimeBefore implements AppointmentValidator {
 
-    public void validate(AppointmentDataRequestDTO appointment) {
-        var appointmentDate = appointment.getDate();
-        var now = LocalDateTime.now();
-        var minutesDiff = Duration.between(now, appointmentDate).toMinutes();
+  public void validate(AppointmentDataRequestDTO appointment) {
+    var appointmentDate = appointment.getDate();
+    var now = LocalDateTime.now();
+    var minutesDiff = Duration.between(now, appointmentDate).toMinutes();
 
-        if (minutesDiff < 30) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Appoint must be set before 30 minutes of desired time");
-        }
+    if (minutesDiff < 30) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "Appoint must be set before 30 minutes of desired time");
     }
+  }
 
 }

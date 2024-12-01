@@ -1,6 +1,6 @@
 package com.alura.api_rest.infra.web.resource;
 
-import com.alura.api_rest.app.service.AppointmentService;
+import com.alura.api_rest.app.service.impl.AppointmentServiceImpl;
 import com.alura.api_rest.domain.enums.Specialty;
 import com.alura.api_rest.infra.web.dto.AppointmentDataRequestDTO;
 import com.alura.api_rest.infra.web.dto.AppointmentResponseDTO;
@@ -37,7 +37,7 @@ class AppointmentResourceTest {
   @Autowired
   private JacksonTester<AppointmentResponseDTO> responseDTO;
   @MockBean
-  private AppointmentService appointmentService;
+  private AppointmentServiceImpl appointmentServiceImpl;
 
 
   @Test
@@ -62,7 +62,7 @@ class AppointmentResourceTest {
 
     var responseDTObody = new AppointmentResponseDTO(1L, 1L, dateTime.toString());
 
-    Mockito.when(appointmentService.saveAppointment(requestBody)).thenReturn(responseDTObody);
+    Mockito.when(appointmentServiceImpl.saveAppointment(requestBody)).thenReturn(responseDTObody);
 
     var response = mockMvc.perform(post("/appointments")
                 .contentType(MediaType.APPLICATION_JSON)

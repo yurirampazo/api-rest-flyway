@@ -25,33 +25,33 @@ import static com.alura.api_rest.domain.constants.SecurityFilterConstants.SKIP_F
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    private final SecurityFilter securityFilter;
-    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
+  private final SecurityFilter securityFilter;
+  private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        final String ADMIN = "ADMIN";
-        return httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(req -> {
-                    req.requestMatchers(SKIP_FILTER_PATHS).permitAll();
-                    req.requestMatchers(HttpMethod.GET, "/patients").hasRole(ADMIN);
-                    req.anyRequest().permitAll();
-                }).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    final String ADMIN = "ADMIN";
+    return httpSecurity
+          .csrf(AbstractHttpConfigurer::disable)
+          .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+          .authorizeHttpRequests(req -> {
+            req.requestMatchers(SKIP_FILTER_PATHS).permitAll();
+            req.requestMatchers(HttpMethod.GET, "/patients").hasRole(ADMIN);
+            req.anyRequest().permitAll();
+          }).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+          .build();
+  }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    return configuration.getAuthenticationManager();
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
 }
